@@ -1,10 +1,10 @@
 import { Text, View } from "react-native";
 import { stylesDefault } from "./style";
 
-export default function SettingsScreen() {
+export default function NewGameScreen() {
   return (
     <View style={stylesDefault.container}>
-      <Text>Settings screen</Text>
+      <Text>New Game screen</Text>
     </View>
   );
 }

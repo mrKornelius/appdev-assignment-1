@@ -1,11 +1,11 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Pressable, Text } from "react-native";
-import FavoritesScreen from "../screens/FavoritesScreen";
 import HomeScreen from "../screens/HomeScreen";
+import NewGameScreen from "../screens/NewGameScreen";
 
 export type TabParamList = {
   Home: undefined;
-  Favorites: undefined;
+  NewGame: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -15,14 +15,35 @@ export default function TabNavigator() {
     <Tab.Navigator
       screenOptions={({ navigation }) => ({
         headerRight: (props) => (
-          <Pressable onPress={() => navigation.navigate("Settings")}>
-            <Text>⚙️</Text>
-          </Pressable>
+          <Ionicons
+            name="settings-outline"
+            size={24}
+            color="black"
+            style={{ marginRight: 16 }}
+            onPress={() => navigation.navigate("Settings")}
+          />
         ),
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
+      <Tab.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{
+          tabBarIcon: () => (
+            <Ionicons name="home-outline" size={24} color="black" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="NewGame"
+        component={NewGameScreen}
+        options={{
+          title: "New Game",
+          tabBarIcon: () => (
+            <Ionicons name="game-controller-outline" size={24} color="black" />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 }
