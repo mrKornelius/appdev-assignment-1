@@ -13,7 +13,7 @@ Jag har valt att använda mig av accelerometern i mobilen för att styra en kula
 
 ### Expo komponenter
 
-1. Accelerometer
+1. Accelerometer (expo-sensors)
 2. def
 
 ### Uppfyllda krav
