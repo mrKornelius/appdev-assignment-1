@@ -41,7 +41,7 @@ export default function GameScreen({ navigation }: any) {
   const _fast = () => Accelerometer.setUpdateInterval(16);
   const _subscribe = () => {
     setSubscription(Accelerometer.addListener(updatePosition));
-    console.log("sub:", subscription);
+    // console.log("sub:", subscription);
   };
 
   const _unsubscribe = () => {

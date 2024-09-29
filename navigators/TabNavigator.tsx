@@ -1,11 +1,15 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import ApiScreen from "../screens/ApiScreen";
+import HighScoreScreen from "../screens/HighScoreScreen";
 import HomeScreen from "../screens/HomeScreen";
 import NewGameScreen from "../screens/NewGameScreen";
 
 export type TabParamList = {
   Home: undefined;
+  API: undefined;
   NewGame: undefined;
+  HighScore: undefined;
 };
 
 const Tab = createBottomTabNavigator<TabParamList>();
@@ -30,8 +34,15 @@ export default function TabNavigator() {
         component={HomeScreen}
         options={{
           tabBarIcon: () => (
-            <Ionicons name="home-outline" size={24} color="black" />
+            <Ionicons name="home-outline" size={36} color="black" />
           ),
+        }}
+      />
+      <Tab.Screen
+        name="API"
+        component={ApiScreen}
+        options={{
+          tabBarIcon: () => <Ionicons name="code" size={36} color="black" />,
         }}
       />
       <Tab.Screen
@@ -40,7 +51,18 @@ export default function TabNavigator() {
         options={{
           title: "New Game",
           tabBarIcon: () => (
-            <Ionicons name="game-controller-outline" size={24} color="black" />
+            <Ionicons name="game-controller-outline" size={36} color="black" />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="HighScore"
+        component={HighScoreScreen}
+        options={{
+          title: "High Scores",
+          tabBarIcon: () => (
+            <Ionicons name="trophy-outline" size={36} color="black" />
+            // <Ionicons name="podium-outline" size={24} color="black" />
           ),
         }}
       />
