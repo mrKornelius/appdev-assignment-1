@@ -1,27 +1,37 @@
-import { Button, Text, View } from "react-native";
+import React from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { useHighScore } from "../contexts/useHighScore";
+import { stylesDefault } from "./style";
 
 export default function HighScoreScreen() {
-  const { highScore, addHighScore, clearAll } = useHighScore();
-
-  const kalle = {
-    name: "kalle",
-    maxLevel: 2,
-    date: new Date().toISOString(),
-    score: 123,
-    time: 29.345,
-  };
+  const { highScore } = useHighScore();
 
   return (
-    <View>
-      <Button title="Clear storage" onPress={clearAll} />
-      <Button title="Add kalle" onPress={() => addHighScore(kalle)} />
-      <Text>High Scores!</Text>
-      {highScore.map((score, index) => (
-        <Text key={index}>
-          {index + 1}. {score.name} {score.time}
-        </Text>
-      ))}
+    <View style={[stylesDefault.container, { marginTop: 50 }]}>
+      <ScrollView>
+        {!highScore || highScore.length === 0 ? (
+          <Text>No high scores yet!</Text>
+        ) : (
+          highScore
+            .sort((a, b) => (a.time > b.time ? 1 : -1))
+            .map((score, index) => (
+              <View key={index} style={s.row}>
+                <Text>{index + 1}.</Text>
+                <Text>{score.name}</Text>
+                <Text>{score.time.toFixed(3)}</Text>
+              </View>
+            ))
+        )}
+      </ScrollView>
     </View>
   );
 }
+
+const s = StyleSheet.create({
+  row: {
+    flex: 1,
+    flexDirection: "row",
+    minWidth: "50%",
+    justifyContent: "space-between",
+  },
+});

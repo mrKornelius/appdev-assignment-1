@@ -31,7 +31,6 @@ export default function HighScoreProvider({ children }: PropsWithChildren) {
     setHighScore(tmp);
     const save = async () => {
       await AsyncStorage.setItem("highScore", JSON.stringify(tmp));
-      console.log("added item", h);
     };
     save();
   };
@@ -52,7 +51,6 @@ export default function HighScoreProvider({ children }: PropsWithChildren) {
       else setHighScore([]);
     };
     load();
-    console.log("stuff loaded!", "items:", highScore.length);
   }, []);
 
   return (
