@@ -1,13 +1,11 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ApiScreen from "../screens/ApiScreen";
 import HighScoreScreen from "../screens/HighScoreScreen";
 import HomeScreen from "../screens/HomeScreen";
 import NewGameScreen from "../screens/NewGameScreen";
 
 export type TabParamList = {
   Home: undefined;
-  API: undefined;
   NewGame: undefined;
   HighScore: undefined;
 };
@@ -22,7 +20,7 @@ export default function TabNavigator() {
           <Ionicons
             name="settings-outline"
             size={24}
-            color="black"
+            color={props.tintColor}
             style={{ marginRight: 16 }}
             onPress={() => navigation.navigate("Settings")}
           />
@@ -36,13 +34,6 @@ export default function TabNavigator() {
           tabBarIcon: () => (
             <Ionicons name="home-outline" size={36} color="black" />
           ),
-        }}
-      />
-      <Tab.Screen
-        name="API"
-        component={ApiScreen}
-        options={{
-          tabBarIcon: () => <Ionicons name="code" size={36} color="black" />,
         }}
       />
       <Tab.Screen
