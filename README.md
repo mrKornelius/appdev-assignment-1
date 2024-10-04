@@ -4,6 +4,8 @@ I den här uppgiften fick vi välja att göra en valfri React Native app med Exp
 
 Jag har valt att använda mig av accelerometern i mobilen för att styra en kula på skärmen genom att luta mobilen i den riktning man vill att kulan ska röra sig. Inspirationen var kommer ifrån klassiska balansspelet labyrint.
 
+Hann dock inte skapa någon labyrint, utan blev bara en rektangulär spelyta där en boll studsar mot väggarna och en liten grön kvadrat som är målet. Kommer man tillräckligt nära målet vinner man och man får skriva in sig på high score listan, poängen blir tiden man får från start till mål.
+
 ![labyrint](labyrint.png)
 
 ## Bygga och köra projektet
