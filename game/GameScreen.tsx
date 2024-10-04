@@ -1,8 +1,11 @@
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import * as Haptic from "expo-haptics";
 import { Accelerometer } from "expo-sensors";
 import { Subscription } from "expo-sensors/build/Pedometer";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  Alert,
   Dimensions,
   Pressable,
   SafeAreaView,
@@ -10,17 +13,23 @@ import {
   Text,
   View,
 } from "react-native";
-import { area, Coord2d, distance, limitOutput } from "./utils";
+import DialogInput from "react-native-dialog-input";
+import { useHighScore } from "../contexts/useHighScore";
+import { RootStackParamList } from "../navigators/RootStackNavigator";
+import { TabParamList } from "../navigators/TabNavigator";
+import { Coord2d, distance, limitOutput } from "./utils";
 
 const { width, height } = Dimensions.get("window");
-const gridSize = Math.min(width / area[0].length, height / area.length);
-const offset = gridSize / 2;
-const startPosition: Coord2d = { x: 100, y: 100 };
+// const gridSize = Math.min(width / area[0].length, height / area.length);
+// const offset = gridSize / 2;
 const BOUNCE_DAMPING = 0.95;
 const UPDATE_INTERVAL = 20;
 
-//FIXME: type!
-export default function GameScreen({ navigation }: any) {
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<RootStackParamList, "GameScreen">,
+  BottomTabScreenProps<TabParamList>
+>;
+export default function GameScreen({ navigation }: Props) {
   // setup states
   const startPosition: Coord2d = { x: 100, y: 100 };
   const goal: Coord2d = { x: 100, y: 600 };
@@ -29,6 +38,9 @@ export default function GameScreen({ navigation }: any) {
   const [time, setTime] = useState(Date.now());
   const [senorEnabled, setSensorEnabled] = useState(false);
   const [startTime, setStartTime] = useState(0);
+  const [finishTime, setFinishTime] = useState(0);
+  const [showDialog, setShowDialog] = useState(false);
+  const { addHighScore } = useHighScore();
 
   useEffect(() => {
     let subscription: Subscription;
@@ -78,23 +90,14 @@ export default function GameScreen({ navigation }: any) {
     checkGoal();
   }, [position]);
 
+  const showGameFinishedDialog = () => setShowDialog(true);
   const checkGoal = () => {
     if (distance(position, goal) < 36) {
       Accelerometer.removeAllListeners();
 
-      let time = Date.now() - startTime;
-      Alert.alert(
-        "Nice job!",
-        `Your time: ${(time / 1000).toFixed(2)} seconds.`,
-        [
-          {
-            text: "Go back",
-            onPress: () => {
-              navigation.goBack();
-            },
-          },
-        ]
-      );
+      setFinishTime(Date.now() - startTime);
+      Haptic.notificationAsync(Haptic.NotificationFeedbackType.Success);
+      showGameFinishedDialog();
     }
   };
 
@@ -110,7 +113,7 @@ export default function GameScreen({ navigation }: any) {
           borderWidth: 2,
         }}
       />
-      <Text>
+      {/* <Text>
         p: ({position.x.toFixed(2)}, {position.y.toFixed(2)})
       </Text>
       <Text>
@@ -127,9 +130,9 @@ export default function GameScreen({ navigation }: any) {
       >
         <Text style={{ fontSize: 24 }}>RESET</Text>
       </Pressable>
-      <Text style={{ fontSize: 36 }}>Acc. test</Text>
+      <Text style={{ fontSize: 36 }}>Acc. test</Text> */}
       <Pressable onPress={handleGyroToggle}>
-        <Text style={{ fontSize: 24 }}>{senorEnabled ? "on" : "off"}</Text>
+        <Text style={{ fontSize: 96 }}>{senorEnabled ? "" : "start"}</Text>
       </Pressable>
 
       <View
@@ -143,52 +146,32 @@ export default function GameScreen({ navigation }: any) {
       <View
         style={[
           s.goal,
-
           {
             transform: [{ translateX: goal.x }, { translateY: goal.y }],
           },
         ]}
       />
+      <DialogInput
+        isDialogVisible={showDialog}
+        title="Congratulations"
+        message={`You won! Time: ${finishTime / 1000}`}
+        hintInput="name"
+        submitInput={(inputText) => {
+          addHighScore({
+            name: inputText,
+            time: finishTime / 1000,
+            date: new Date().toISOString(),
+            score: 0,
+            maxLevel: 0,
+          });
+          navigation.navigate("HighScoreScreen");
+        }}
+        closeDialog={() => {
+          setShowDialog(false);
+          navigation.goBack();
+        }}
+      />
     </SafeAreaView>
-    // <View style={s.container}>
-    //   <Pressable onPress={() => alert("lol")}>
-    //     <Text style={s.text}>
-    //       x: {position.x.toFixed(2)} y: {position.y.toFixed(2)}
-    //     </Text>
-    //   </Pressable>
-
-    //  {area.map((row, r) =>
-    //   row.map((cell, c) => (
-    //     // <Text>cell: {`(${r},${c}): ${cell}`}</Text>
-    //     <View
-    //       key={c + "-" + r}
-    //       style={[
-    //         s.cell,
-    //         {
-    //           backgroundColor:
-    //             cell === 0
-    //               ? "silver"
-    //               : cell === 1
-    //               ? "lightgreen"
-    //               : cell === 2
-    //               ? "black"
-    //               : "tomato",
-    //           left: -gridSize / 2,
-    //           top: -gridSize / 2,
-    //           width: gridSize,
-    //           height: gridSize,
-    //         },
-    //         {
-    //           transform: [
-    //             { translateX: gridSize * c + offset },
-    //             { translateY: gridSize * r + offset },
-    //           ],
-    //         },
-    //       ]}
-    //     />
-    //   ))
-    // )}
-    // </View>
   );
 }
 
@@ -232,3 +215,43 @@ const s = StyleSheet.create({
     zIndex: -3,
   },
 });
+
+// <View style={s.container}>
+//   <Pressable onPress={() => alert("lol")}>
+//     <Text style={s.text}>
+//       x: {position.x.toFixed(2)} y: {position.y.toFixed(2)}
+//     </Text>
+//   </Pressable>
+
+//  {area.map((row, r) =>
+//   row.map((cell, c) => (
+//     // <Text>cell: {`(${r},${c}): ${cell}`}</Text>
+//     <View
+//       key={c + "-" + r}
+//       style={[
+//         s.cell,
+//         {
+//           backgroundColor:
+//             cell === 0
+//               ? "silver"
+//               : cell === 1
+//               ? "lightgreen"
+//               : cell === 2
+//               ? "black"
+//               : "tomato",
+//           left: -gridSize / 2,
+//           top: -gridSize / 2,
+//           width: gridSize,
+//           height: gridSize,
+//         },
+//         {
+//           transform: [
+//             { translateX: gridSize * c + offset },
+//             { translateY: gridSize * r + offset },
+//           ],
+//         },
+//       ]}
+//     />
+//   ))
+// )}
+// </View>
