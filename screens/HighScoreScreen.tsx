@@ -16,9 +16,9 @@ export default function HighScoreScreen() {
             .sort((a, b) => (a.time > b.time ? 1 : -1))
             .map((score, index) => (
               <View key={index} style={s.row}>
-                <Text>{index + 1}.</Text>
-                <Text>{score.name}</Text>
-                <Text>{score.time.toFixed(3)}s</Text>
+                <Text style={s.cell}>{index + 1}.</Text>
+                <Text style={s.cell}>{score.name}</Text>
+                <Text style={s.cell}>{score.time.toFixed(3)}s</Text>
               </View>
             ))
         )}
@@ -34,4 +34,5 @@ const s = StyleSheet.create({
     minWidth: "50%",
     justifyContent: "space-between",
   },
+  cell: { flex: 1 },
 });

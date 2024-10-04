@@ -2,7 +2,7 @@ import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, View } from "react-native";
 import { useHighScore } from "../contexts/useHighScore";
 import { RootStackParamList } from "../navigators/RootStackNavigator";
 import { TabParamList } from "../navigators/TabNavigator";
@@ -18,22 +18,8 @@ export default function SettingsScreen({ navigation }: Props) {
   return (
     <View style={stylesDefault.container}>
       <View>
-        <Text>Use system</Text>
-        <Text>Dark mode</Text>
-        <Text>Light mode</Text>
-      </View>
-      <View>
-        <Button title="Reset High Scores" onPress={clearAll} />
-        <Text>Player color</Text>
+        <Button title="Reset High Score" onPress={clearAll} />
       </View>
     </View>
   );
 }
-
-const s = StyleSheet.create({
-  row: {
-    flex: 1,
-    flexDirection: "row",
-    gap: 10,
-  },
-});
