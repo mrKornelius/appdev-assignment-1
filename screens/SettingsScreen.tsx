@@ -1,21 +1,39 @@
-import { Alert, Text, View } from "react-native";
+import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import React from "react";
+import { Button, StyleSheet, Text, View } from "react-native";
+import { useHighScore } from "../contexts/useHighScore";
+import { RootStackParamList } from "../navigators/RootStackNavigator";
+import { TabParamList } from "../navigators/TabNavigator";
 import { stylesDefault } from "./style";
 
-export default function SettingsScreen({ navigation }: any) {
-  // TODO: type!
-  let time = 12345;
-  Alert.alert("Nice job!", `Your time: ${(time / 1000).toFixed(2)} seconds.`, [
-    { text: "Restart", onPress: () => {} },
-    {
-      text: "Go back",
-      onPress: () => {
-        navigation.goBack();
-      },
-    },
-  ]);
+type Props = CompositeScreenProps<
+  NativeStackScreenProps<RootStackParamList, "Settings">,
+  BottomTabScreenProps<TabParamList>
+>;
+export default function SettingsScreen({ navigation }: Props) {
+  const { clearAll } = useHighScore();
+
   return (
     <View style={stylesDefault.container}>
-      <Text>Settings screen</Text>
+      <View>
+        <Text>Use system</Text>
+        <Text>Dark mode</Text>
+        <Text>Light mode</Text>
+      </View>
+      <View>
+        <Button title="Reset High Scores" onPress={clearAll} />
+        <Text>Player color</Text>
+      </View>
     </View>
   );
 }
+
+const s = StyleSheet.create({
+  row: {
+    flex: 1,
+    flexDirection: "row",
+    gap: 10,
+  },
+});
