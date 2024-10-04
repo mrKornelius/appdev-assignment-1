@@ -16,7 +16,7 @@ export default function RandomAdvice() {
   return (
     <View style={s.container}>
       <View>
-        <Text style={s.heading}>Todays Advice</Text>
+        <Text style={s.heading}>Today's Advice</Text>
       </View>
       <View>
         <Text style={s.text}>{advice}</Text>
@@ -32,12 +32,15 @@ const s = StyleSheet.create({
     marginHorizontal: 25,
     paddingHorizontal: 5,
     borderWidth: 1,
+    borderColor: "#555",
   },
   heading: {
-    backgroundColor: "#555",
     color: "#f5f5f5",
-    marginHorizontal: 25,
     fontWeight: "700",
+    backgroundColor: "#555",
+    borderColor: "#555",
+    borderWidth: 1,
+    marginHorizontal: 25,
     paddingHorizontal: 5,
   },
 });

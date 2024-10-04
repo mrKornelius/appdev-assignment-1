@@ -18,7 +18,7 @@ export default function HighScoreScreen() {
               <View key={index} style={s.row}>
                 <Text>{index + 1}.</Text>
                 <Text>{score.name}</Text>
-                <Text>{score.time.toFixed(3)}</Text>
+                <Text>{score.time.toFixed(3)}s</Text>
               </View>
             ))
         )}
