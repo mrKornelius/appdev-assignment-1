@@ -41,4 +41,4 @@ Har använt modulen DialogInput för att få en alert-liknande dialog med ett in
 - [x] Git och Github
 - [x] ytterligare en extern modul
 - [x] använda ett web API
-- [ ] Förbered lansering (görs senare)
+- [x] Förbered lansering (görs senare)

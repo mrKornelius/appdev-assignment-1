@@ -19,7 +19,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": ["android.permission.HIGH_SAMPLING_RATE_SENSORS"]
+      "permissions": [
+        "android.permission.HIGH_SAMPLING_RATE_SENSORS"
+      ],
+      "package": "com.mrkornelius.appdevassignment1"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,6 +34,11 @@
           "motionPermission": "Allow $(PRODUCT_NAME) to access your device motion."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "77b17d6a-d579-4065-946d-bc02948ccfb0"
+      }
+    }
   }
 }
